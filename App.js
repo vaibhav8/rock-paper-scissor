@@ -11,7 +11,7 @@ export default class App extends React.Component {
         <View style={styles.button}>
         <Button 
           color='#0A3000'
-          onPress={() => Alert.alert('Rock is selected')} 
+          onPress={() => Alert.alert('Rock is pressed')} 
           title='Rock!'
         />
         </View>
