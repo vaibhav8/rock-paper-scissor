@@ -2,40 +2,54 @@ import React from 'react';
 import { StyleSheet, Vibration, Alert, Button, Text, View } from 'react-native';
 
 var ran;
+
 export default class App extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      win : 0,
+      lose : 0
+    }
+  }
   
- rock() {
+ rock = () => {
   ran = Math.floor(Math.random() * 3);
      if(ran == 0) {
-       {Alert.alert("Bot choose Rock!","Match Drawn!")}
+       {Alert.alert("Match Drawn!","Bot choose Rock!")}     
      } else if(ran == 1) {
-       {Alert.alert("Bot choose Paper!","You lost! Don't give up, Try again!")}
+       this.setState({lose: this.state.lose+1}, ()=> Alert.alert("You lost!","Bot choose Paper!"))
      } else {
-       {Alert.alert("Bot choose Scissor!","Congratulations! You won!")}
+       this.setState({win: this.state.win+1}, () => Alert.alert("Congratulations! You won!","Bot choose Scissor!",Vibration.vibrate(1000)))
      }
  }
 
- paper() {
+ paper = () => {
   ran = Math.floor(Math.random() * 3);
      if(ran == 0) {
-       {Alert.alert("Bot choose Rock!","Congratulations! You won!")}
+     this.setState({win: this.state.win + 1},() => Alert.alert("Congratulations! You won!","Bot choose Rock!",Vibration.vibrate(1000)))
      } else if(ran == 1) {
-       {Alert.alert("Bot choose Paper!","Match Drawn!")}
-     } else {
-       {Alert.alert("Bot choose Scissor!","You lost! Don't give up, Try again!")}
+       {Alert.alert("Match Drawn!","Bot choose Paper!")}
+     } else { 
+       this.setState({lose: this.state.lose+1}, () => Alert.alert("You lost!","Bot choose Scissor!"))
      }
  }
 
- scissor() {
+ scissor = () => {
   ran = Math.floor(Math.random() * 3);
      if(ran == 0) {
-       {Alert.alert("Bot choose Rock!","You lost! Don't give up, Try again!")}
+       this.setState({lose: this.state.lose+1}, () => Alert.alert("You lost!","Bot choose Rock!"))
      } else if(ran == 1) {
-       {Alert.alert("Bot choose Paper!","Congratulations! You won!")}
+       this.setState({win: this.state.win + 1}, () => Alert.alert("Congratulations! You won!", "Bot choose Paper!",Vibration.vibrate(1000)))
      } else {
-       {Alert.alert("Bot choose Scissor!", "Match Drawn!")}
+       {Alert.alert("Match Drawn!", "Bot choose Scissor!")}
      }
  }
+
+ reset = () => {
+   this.setState({win: 0, lose: 0},() => Alert.alert("Scores are reset!"), Vibration.vibrate(1000))
+ }
+
   render() {
     const duration = 1000;
 
@@ -43,10 +57,14 @@ export default class App extends React.Component {
       <View style={styles.container}>
           <Text style={styles.text}>Game!</Text>
           <Text style={styles.text}>Rock-Paper-Scissor</Text>
-          <Text style={styles.text1}>Press Button!</Text>
+          <Text style={styles.text1}>Press any Button!</Text>
         <View style={styles.result}>
           <Text style={styles.win}>You Win!</Text>
           <Text>Bot Win!</Text>
+        </View>
+        <View style={styles.result1}>
+          <Text style={styles.win1}>{this.state.win}</Text>
+          <Text>{this.state.lose}</Text>
         </View>
         <View style={styles.button}>
         <Button 
@@ -58,8 +76,8 @@ export default class App extends React.Component {
         <View style={styles.button1}>
         <Button
           color= '#A3007A'
-          onPress={this.paper}
           title= 'Paper!'
+          onPress={this.paper}
         />
         </View>
         <View style={styles.button1}>
@@ -69,7 +87,14 @@ export default class App extends React.Component {
           title='Scissor!'
         />
         </View>
-        <Text style={styles.text2}>Designed and developed by - Vaibhao Dhage</Text>
+        <View style={styles.button2}>
+        <Button
+          color="red"
+          onPress={this.reset}
+          title='Reset!'
+        />
+        </View>
+        <Text style={styles.text2}>Designed and developed by => V D</Text>
       </View>
     );
   }
@@ -81,7 +106,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     marginTop: 50,
-    backgroundColor: 'lightyellow'
+    backgroundColor: '#ffffcc'
   },
   text: {
     paddingTop: 10,
@@ -97,23 +122,40 @@ const styles = StyleSheet.create({
   },
   result: {
     flexDirection: 'row',
-    margin: 30,
+    marginTop: 30,
   },
   win: {
     paddingRight: 100
   },
+  result1: {
+    flexDirection: 'row',
+    margin: 10,
+  },
+  win1: {
+    paddingRight: 160
+  },
   button: {
-    marginTop: 100,
+    marginTop: 60,
+    width: 200,
     borderWidth: 4,
     borderRadius: 50,
   },
   button1: {
-    marginTop: 30,
+    marginTop: 20,
+    width: 200,
     borderWidth: 4,
     borderRadius: 50
   },
+  button2: {
+    marginTop: 20,
+    width: 200,
+    borderWidth: 4,
+    borderRadius: 50,
+    backgroundColor: 'lightgrey'
+  },
   text2: {
-    marginTop: 100,
-    color: 'red'
+    marginTop: 70,
+    color: 'red',
+    fontFamily: 'AvenirNext-Bold'
   }
 });
